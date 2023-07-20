@@ -6,8 +6,8 @@ const bot = new Bot(process.env.BOT_TOKEN);
 
 // Command check prire Product
   bot.command('gia', async (ctx) => {
-    const message = ctx.message;
-    const url = message.text.split(' ')[1];
+    const message = ctx.message.text;
+    const url = message.split(' ')[1];
   
     if (!url) {
       ctx.reply('<b>Làm ơn thêm link địa chỉ sản phẩm sau câu lệnh</b> /gia ',{parse_mode: "HTML"});
