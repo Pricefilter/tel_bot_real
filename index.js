@@ -34,8 +34,15 @@ const bot = new Bot(process.env.BOT_TOKEN);
       await ctx.deleteMessage(message.message_id);
 
     } else {
-      await ctx.deleteMessage(message.message_id);
-      ctx.reply('Có vẻ như địa chỉ ' + url + ' chưa đúng hoặc không phải link sản phẩm! Kiểm tra và thử lại nhé!');
+      if (sts === "error" && obj.msg === "error when getting product detail") {
+        await ctx.deleteMessage(message.message_id);
+      ctx.reply(`Sản phẩm ${url} chưa có sự thay đổi giá nào!`);
+
+      } else {
+        await ctx.deleteMessage(message.message_id);
+      ctx.reply(`Có vẻ như địa chỉ ${url} chưa đúng hoặc không phải link sản phẩm! Kiểm tra và thử lại nhé!`);
+      }
+      
     }
     } catch (error) {
       ctx.reply('Cảm ơn! Máy chủ gặp sự cố xin vui lòng thử lại!');
