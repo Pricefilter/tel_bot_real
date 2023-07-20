@@ -16,7 +16,7 @@ const bot = new Bot(process.env.BOT_TOKEN);
   
     try {
       const unixtime = Math.floor(Date.now())
-      const apiURL = 'https://apiv3.beecost.vn/search/product?timestamp=' + unixtime + '&product_url=' + url
+      const apiURL = `https://apiv3.beecost.vn/search/product?timestamp=${unixtime}&product_url=${url}`
       const response = await fetch(apiURL, {
         method: 'GET',
         headers: {
@@ -27,9 +27,24 @@ const bot = new Bot(process.env.BOT_TOKEN);
       const obj = JSON.parse(res)
       const sts = obj.status
     if (sts === "success") {
-      const items = obj.data.product_base.name
+      const name = obj.data.product_base.name
+      const baseID = obj.data.product_base.product_base_id
       const price = obj.data.product_base.price
-      const strMess = items + "\nGiá: " + price
+// Fetch get history price
+      const hisPri = `https://apiv3.beecost.vn/product/history_price?product_base_id=${baseID}&price_current=${price}`
+      const response1 = await fetch(hisPri, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json'
+        },
+      });
+      const res1 = await response1.text();
+      const obj1 = JSON.parse(res1)
+      const min = obj1.data.product_history_data.price_classification.min_price
+      const avr = obj1.data.product_history_data.price_classification.avg_price
+      const max = obj1.data.product_history_data.price_classification.max_price
+
+      const strMess = `${name}\nGiá: ${price}\nGiá Thấp Nhất: ${min}\nTrung bình giá: ${avr}\nGiá cao nhất: ${max}`
       ctx.reply(strMess,{parse_mode: "HTML"});
       await ctx.deleteMessage(message.message_id);
 
