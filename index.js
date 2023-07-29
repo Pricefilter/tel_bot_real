@@ -6,7 +6,7 @@ require("dotenv").config();
 const bot = new Bot(process.env.BOT_TOKEN);
 
 // cau lenh
-async function linkAddressMiddleware(ctx, next) {
+bot.on('message', async (ctx) => { 
   const message = ctx.message.text;
   const linkRegex = /(https?:\/\/[^\s]+)/;
   const lzd = /lazada/
@@ -279,7 +279,6 @@ async function linkAddressMiddleware(ctx, next) {
   return next();
 }
 
-bot.use(linkAddressMiddleware)
   
 // Moi truong lam viec
 if (process.env.NODE_ENV === "production") {
