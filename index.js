@@ -6,7 +6,7 @@ require("dotenv").config();
 const bot = new Bot(process.env.BOT_TOKEN);
 
 // cau lenh
-bot.on('message', async (ctx) => { 
+bot.on('message', async (ctx, next) => {
   const message = ctx.message.text;
   const linkRegex = /(https?:\/\/[^\s]+)/;
   const lzd = /lazada/
@@ -18,18 +18,18 @@ bot.on('message', async (ctx) => {
   if (linkRegex.test(message)) {
     const url = message.match(linkRegex)[0]
     if (!lkol.test(url) && !lkoc.test(url) && !lzd.test(url) && !pee.test(url) && !tiki.test(url)) {
-      await ctx.deleteMessage(message.message_id);
+    //   await ctx.deleteMessage(message.message_id);
       return next()
     }
     if (lzd.test(url)){ 
-    await ctx.deleteMessage(message.message_id);
+    // await ctx.deleteMessage(message.message_id);
   const reslzd = await fetch(url)
   const resURL = await reslzd.text()
   const checkURL = (/₫ (.*?)Mua/g ).test(resURL)
 // Laz chuẩn  
     if (!lkol.test(url) && !lkoc.test(url) && checkURL == true){ 
       // if (checkURL == true) {
-      ctx.reply("link chuẩn")
+    //   ctx.reply("link chuẩn")
       let retryCount = 0;
       const maxRetries = 3;
       while (retryCount < maxRetries) {
@@ -78,10 +78,12 @@ bot.on('message', async (ctx) => {
         // const min = obj1.data.product_history_data.price_classification.min_price
         // const rate = obj1.data.product_history_data.price_classification.classify_price
         const rate = obj1.data.product_history_data.auto_content.review_price.sentences[2]
-        const avr = obj1.data.product_history_data.price_classification.avg_price
-        const max = obj1.data.product_history_data.price_classification.max_price
+        // const avr = obj1.data.product_history_data.price_classification.avg_price
+        // const max = obj1.data.product_history_data.price_classification.max_price
         const timestamps = obj1.data.product_history_data.item_history.price_ts
         const priItem = obj1.data.product_history_data.item_history.price
+        const avr = avrPri(priItem)
+        const max = Math.max(...priItem)
         console.log(priItem.length)
         const formattedNumbers = priItem.map(number => (number / 1000));
         const formattedDates = timestamps.map(epochToDDMMYY);
@@ -109,7 +111,7 @@ bot.on('message', async (ctx) => {
     ctx.reply(`Opps! Có vẻ như ${url} không phải link sản phẩm! Vui lòng kiểm tra lại nhé!`)
     return next()
     }
-    ctx.reply("link aff")
+    // ctx.reply("link aff")
     let retryCount = 0;
     const maxRetries = 3;
     while (retryCount < maxRetries) {
@@ -160,10 +162,13 @@ bot.on('message', async (ctx) => {
         // const min = obj1.data.product_history_data.price_classification.min_price
         // const rate = obj1.data.product_history_data.price_classification.classify_price
         const rate = obj1.data.product_history_data.auto_content.review_price.sentences[2]
-        const avr = obj1.data.product_history_data.price_classification.avg_price
-        const max = obj1.data.product_history_data.price_classification.max_price
+        // const avr = obj1.data.product_history_data.price_classification.avg_price
+        // const max = obj1.data.product_history_data.price_classification.max_price
         const timestamps = obj1.data.product_history_data.item_history.price_ts
         const priItem = obj1.data.product_history_data.item_history.price
+        const avr = avrPri(priItem)
+        const max = Math.max(...priItem)
+        console.log(priItem.length)
         const formattedNumbers = priItem.map(number => (number / 1000));
         const formattedDates = timestamps.map(epochToDDMMYY);
         const minValue = Math.min(...priItem)
@@ -185,9 +190,10 @@ bot.on('message', async (ctx) => {
       // Handle the case when the maximum number of retries is reached
     }
   }
+    await ctx.deleteMessage(message.message_id); 
     } else {
       if (pee.test(url)){
-        await ctx.deleteMessage(message.message_id); 
+        // await ctx.deleteMessage(message.message_id); 
 // PEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       let retryCount = 0;
       const maxRetries = 3;
@@ -241,10 +247,13 @@ bot.on('message', async (ctx) => {
         // const min = obj1.data.product_history_data.price_classification.min_price
         // const rate = obj1.data.product_history_data.price_classification.classify_price
         const rate = obj1.data.product_history_data.auto_content.review_price.sentences[2]
-        const avr = obj1.data.product_history_data.price_classification.avg_price
-        const max = obj1.data.product_history_data.price_classification.max_price
+        // const avr = obj1.data.product_history_data.price_classification.avg_price
+        // const max = obj1.data.product_history_data.price_classification.max_price
         const timestamps = obj1.data.product_history_data.item_history.price_ts
         const priItem = obj1.data.product_history_data.item_history.price
+        const avr = avrPri(priItem)
+        const max = Math.max(...priItem)
+        console.log(priItem.length)
         const formattedNumbers = priItem.map(number => (number / 1000));
         const formattedDates = timestamps.map(epochToDDMMYY);
         console.log(formattedDates.length)
@@ -266,9 +275,10 @@ bot.on('message', async (ctx) => {
           ctx.reply("Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé!")
           // Handle the case when the maximum number of retries is reached
         }
+        await ctx.deleteMessage(message.message_id); 
       } else {
       if (tiki.test(url)) {
-        await ctx.deleteMessage(message.message_id);
+        // await ctx.deleteMessage(message.message_id);
         ctx.reply("Sàn TIKI Đang cập nhật trong thời gian tới!")
       }
     }
@@ -277,30 +287,18 @@ bot.on('message', async (ctx) => {
   }
 
   return next();
+})
+
+function avrPri(numbers) {
+// Calculate the sum of all numbers
+const sum = numbers.reduce((acc, curr) => acc + curr, 0);
+
+// Calculate the average value
+const average = sum / numbers.length;
+return average
 }
 
-  
-// Moi truong lam viec
-if (process.env.NODE_ENV === "production") {
-    const app = express();
-    app.use(express.json());
-    app.use(webhookCallback(bot, "express"));
-  
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-      console.log(`Bot listening on port ${PORT}`);
-    });
-  } else {
-    bot.start();
-  }
-  
-  process.once("SIGINT", () => bot.stop("SIGINT"));
-  process.once("SIGTERM", () => bot.stop("SIGTERM"));
-
-
-
-
- // Convert epoch to DD/MM/YY format
+// Convert epoch to DD/MM/YY format
 function epochToDDMMYY(epoch) {
   const date = new Date(epoch);
   const options = { day: '2-digit', month: '2-digit', year: '2-digit' };
@@ -377,3 +375,24 @@ const chart = {
   const chartUrl = `https://quickchart.io/chart?&c=${encodeURIComponent(JSON.stringify(chart))}`;
 return chartUrl
 }
+
+
+// bot.use(linkAddressMiddleware)
+  
+// Moi truong lam viec
+if (process.env.NODE_ENV === "production") {
+    const app = express();
+    app.use(express.json());
+    app.use(webhookCallback(bot, "express"));
+  
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`Bot listening on port ${PORT}`);
+    });
+  } else {
+    bot.start();
+  }
+  
+  process.once("SIGINT", () => bot.stop("SIGINT"));
+  process.once("SIGTERM", () => bot.stop("SIGTERM"));
+
