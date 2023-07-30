@@ -53,6 +53,7 @@ bot.on('message', async (ctx, next) => {
 // Kiem tra bien dong gia buoc 1
       if (avr == "-1"){
           ctx.reply(`Sản phẩm ${url} chưa có bất kì biến động giá nào!`)
+	      await ctx.deleteMessage(message.message_id);
         } else {
           const curpri = resURL.match(/₫ (.*?)Mua/g )[0].replace(/₫ /g, "")
           .replace(/Mua/g, "")
@@ -109,6 +110,7 @@ bot.on('message', async (ctx, next) => {
   } else {
     if (!lkol.test(url) && !lkoc.test(url) && !lzd.test(url) && checkURL == false) {
     ctx.reply(`Opps! Có vẻ như ${url} không phải link sản phẩm! Vui lòng kiểm tra lại nhé!`)
+	    await ctx.deleteMessage(message.message_id);
     return next()
     }
     // ctx.reply("link aff")
@@ -132,15 +134,18 @@ bot.on('message', async (ctx, next) => {
       
       if (sts === "error" && obj.msg === "product url is not valid") {
         ctx.reply(`Opps! Có vẻ như ${url} không phải link sản phẩm! Vui lòng kiểm tra lại nhé!`)
+	      await ctx.deleteMessage(message.message_id);
       } else {
         if (sts === "error") {
           ctx.reply(`Sản phẩm ${url} chưa có bất kì biến động giá nào!`)
+		await ctx.deleteMessage(message.message_id); 
         }}
 
       if (sts === "success") {
         const avr1 = obj.data.product_base.price_insight.avg_price
         if (avr1 == "-1"){
           ctx.reply(`Sản phẩm ${url} chưa có bất kì biến động giá nào!`)
+		await ctx.deleteMessage(message.message_id); 
           return next()
         }
         const name = obj.data.product_base.name
@@ -178,6 +183,7 @@ bot.on('message', async (ctx, next) => {
         const strMess = `<i><a href="${url}">${name}</a></i>\n<b>${rate}</b>`
 
         await ctx.replyWithPhoto(chart,{caption: strMess, parse_mode: "HTML"});
+      await ctx.deleteMessage(message.message_id);
       }
       break;
     } catch (errr) {
@@ -188,9 +194,10 @@ bot.on('message', async (ctx, next) => {
     if (retryCount === maxRetries) {
       ctx.reply("Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé!")
       // Handle the case when the maximum number of retries is reached
-    }
+    await ctx.deleteMessage(message.message_id);
+   }
   }
-    await ctx.deleteMessage(message.message_id); 
+     
     } else {
       if (pee.test(url)){
         // await ctx.deleteMessage(message.message_id); 
@@ -217,15 +224,18 @@ bot.on('message', async (ctx, next) => {
       
       if (sts === "error" && obj.msg === "product url is not valid") {
         ctx.reply(`Opps! Có vẻ như ${url} không phải link sản phẩm! Vui lòng kiểm tra lại nhé!`)
+	      await ctx.deleteMessage(message.message_id);
       } else {
         if (sts === "error") {
           ctx.reply(`Sản phẩm ${url} chưa có bất kì biến động giá nào!`)
+		await ctx.deleteMessage(message.message_id); 
         }}
 
       if (sts === "success") {
         const avr1 = obj.data.product_base.price_insight.avg_price
         if (avr1 == "-1"){
           ctx.reply(`Sản phẩm ${url} chưa có bất kì biến động giá nào!`)
+		await ctx.deleteMessage(message.message_id); 
           return next()
         }
         const name = obj.data.product_base.name
@@ -264,6 +274,7 @@ bot.on('message', async (ctx, next) => {
         const strMess = `<i><a href="${url}">${name}</a></i>\n<b>${rate}</b>`
 
         await ctx.replyWithPhoto(chart,{caption: strMess, parse_mode: "HTML"});
+	      await ctx.deleteMessage(message.message_id);
       }
         break;
         } catch (ers) {
@@ -274,11 +285,11 @@ bot.on('message', async (ctx, next) => {
         if (retryCount === maxRetries) {
           ctx.reply("Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé!")
           // Handle the case when the maximum number of retries is reached
+		await ctx.deleteMessage(message.message_id); 
         }
-        await ctx.deleteMessage(message.message_id); 
-      } else {
+        } else {
       if (tiki.test(url)) {
-        // await ctx.deleteMessage(message.message_id);
+        await ctx.deleteMessage(message.message_id);
         ctx.reply("Sàn TIKI Đang cập nhật trong thời gian tới!")
       }
     }
