@@ -5,8 +5,29 @@ const express = require("express");
 require("dotenv").config();
 const bot = new Bot(process.env.BOT_TOKEN);
 
+// huong dan
+bot.command('start', async (ctx) => {
+  const chatId = ctx.message.chat.id
+  if (chatId != "-1001959268889") {
+    ctx.replyWithPhoto("https://ibb.co/6NCCXYc", {caption: `<i><b>Để sử dụng được công cụ - Bạn làm theo các bước sau đây!</b></i>
+    \n<b>Bước 1:</b> Tìm đến trang sản phẩm bạn muốn truy vấn.
+    \n<b>Bước 2:</b> Nhấn nút chia sẻ sản phẩm (như hình) và copy link chia sẻ sản phẩm.
+    \n<b>Bước 3:</b> Tham gia group https://t.me/CoNenChotDon và paste link sản phẩm vô chat, rồi ấn Gửi.
+    \n<b>Bước 4:</b> Chờ đợi kết quả từ phía máy chủ và xem xét giá sản phẩm!`, parse_mode: "HTML"})
+  } 
+});
+
 // cau lenh
 bot.on('message', async (ctx, next) => {
+  const chatId = ctx.message.chat.id
+  const fromID = ctx.message.from.id
+  const lastName = (ctx.message.from.last_name == undefined) ? "":ctx.message.from.last_name;
+  const fullName = `${ctx.message.from.first_name} ${lastName}`
+  // const messID = ctx.message.message_id
+  console.log(chatId + " - " + fromID) 
+  const tagName = `<a href="tg://user?id=${fromID}">${fullName}</a>`
+  if (chatId == "5229925261" || chatId == "-1001959268889") {
+    //ctx.reply("link chuẩn")
   const message = ctx.message.text;
   const linkRegex = /(https?:\/\/[^\s]+)/;
   const lzd = /lazada/
@@ -18,7 +39,7 @@ bot.on('message', async (ctx, next) => {
   if (linkRegex.test(message)) {
     const url = message.match(linkRegex)[0]
     if (!lkol.test(url) && !lkoc.test(url) && !lzd.test(url) && !pee.test(url) && !tiki.test(url)) {
-    //   await ctx.deleteMessage(message.message_id);
+     //await ctx.deleteMessage(message.message_id);
       return next()
     }
     if (lzd.test(url)){ 
@@ -31,7 +52,7 @@ bot.on('message', async (ctx, next) => {
       // if (checkURL == true) {
     //   ctx.reply("link chuẩn")
       let retryCount = 0;
-      const maxRetries = 3;
+      const maxRetries = 5;
       while (retryCount < maxRetries) {
       try { 
       const unixtime = Math.floor(Date.now())
@@ -46,14 +67,15 @@ bot.on('message', async (ctx, next) => {
     });
       const res = await response.text(); 
       const obj = await JSON.parse(res)
+      console.log("suc11111111111111")
       const sts =  obj.status
-      if (sts === "error") {ctx.reply(`Sản phẩm ${url} chưa có bất kì biến động giá nào!`)}
+      if (sts === "error") {ctx.reply(`<a href="${url}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{parse_mode: "HTML"})
+      }
       if (sts === "success") {
         const avr = obj.data.product_base.price_insight.avg_price
 // Kiem tra bien dong gia buoc 1
       if (avr == "-1"){
-          ctx.reply(`Sản phẩm ${url} chưa có bất kì biến động giá nào!`)
-	      await ctx.deleteMessage(message.message_id);
+        ctx.reply(`<a href="${url}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{parse_mode: "HTML"})
         } else {
           const curpri = resURL.match(/₫ (.*?)Mua/g )[0].replace(/₫ /g, "")
           .replace(/Mua/g, "")
@@ -62,6 +84,7 @@ bot.on('message', async (ctx, next) => {
           .replace(/</g, "")
           .replace(/>/g,"")
           .replace(/\//g,"")
+          const dLink = resURL.match(/href="(.*?)\?/)[1]
           const baseID = obj.data.product_base.product_base_id         
 // Fetch get history price
         const hisPri = await `https://apiv3.beecost.vn/product/history_price?product_base_id=${baseID}&price_current=${curpri}`
@@ -76,6 +99,7 @@ bot.on('message', async (ctx, next) => {
         });
         const res1 = await response1.text();
         const obj1 = await JSON.parse(res1)
+        console.log("suc222222222222222")
         // const min = obj1.data.product_history_data.price_classification.min_price
         // const rate = obj1.data.product_history_data.price_classification.classify_price
         const rate = obj1.data.product_history_data.auto_content.review_price.sentences[2]
@@ -86,16 +110,27 @@ bot.on('message', async (ctx, next) => {
         const avr = avrPri(priItem)
         const max = Math.max(...priItem)
         console.log(priItem.length)
+        const count = priItem.length
         const formattedNumbers = priItem.map(number => (number / 1000));
         const formattedDates = timestamps.map(epochToDDMMYY);
         const minValue = Math.min(...priItem)
         const minIndex = priItem.indexOf(minValue);
-        const chart = await quickChart(formattedDates, minIndex, formattedNumbers, minValue.toLocaleString('de-DE'), avr.toLocaleString('de-DE') , max.toLocaleString('de-DE'))
+        const chart = await quickChart(formattedDates, minIndex, formattedNumbers, minValue.toLocaleString('de-DE'), avr.toLocaleString('de-DE') , max.toLocaleString('de-DE'), count)
        
-        const strMess = `<i><a href="${url}">${name}</a></i>\n<b>${rate}</b>`
-        await ctx.replyWithPhoto(chart,{caption: strMess, parse_mode: "HTML"});
+        const strMess = `<i><a href="${dLink}">${name}</a></i>\n<b>${rate}</b> ${tagName}`
+        //\n﹏﹏﹏﹏﹏\n@CoNenChotDon
+        await ctx.replyWithPhoto(chart,{caption: strMess, reply_markup: {
+          inline_keyboard: [
+            /* Inline buttons. 2 side-by-side */
+            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "(+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
 
+            /* One button */
+            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" } ]
+        ]
+      }
+ , parse_mode: "HTML"});
         }
+        await ctx.deleteMessage(message.message_id);
       }
       break;
     } catch (err) {
@@ -104,18 +139,22 @@ bot.on('message', async (ctx, next) => {
     }
   }
     if (retryCount === maxRetries) {
-      ctx.reply("Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé!")
+      ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`)
       // Handle the case when the maximum number of retries is reached
     }
   } else {
+    const reslzd = await fetch(url)
+    const resURL = await reslzd.url
+    console.log(resURL)
+    const dLink = await getDlink(resURL)
+    //console.log(dLink)
     if (!lkol.test(url) && !lkoc.test(url) && !lzd.test(url) && checkURL == false) {
-    ctx.reply(`Opps! Có vẻ như ${url} không phải link sản phẩm! Vui lòng kiểm tra lại nhé!`)
-	    await ctx.deleteMessage(message.message_id);
+    ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`)
     return next()
     }
     // ctx.reply("link aff")
     let retryCount = 0;
-    const maxRetries = 3;
+    const maxRetries = 5;
     while (retryCount < maxRetries) {
     try {
       const unixtime = Math.floor(Date.now())
@@ -131,21 +170,20 @@ bot.on('message', async (ctx, next) => {
       const res = await response.text(); 
       const obj = await JSON.parse(res)
       const sts =  obj.status
-      
+      console.log("suc1111111111111111111111111")
       if (sts === "error" && obj.msg === "product url is not valid") {
-        ctx.reply(`Opps! Có vẻ như ${url} không phải link sản phẩm! Vui lòng kiểm tra lại nhé!`)
-	      await ctx.deleteMessage(message.message_id);
+        ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`)
       } else {
         if (sts === "error") {
-          ctx.reply(`Sản phẩm ${url} chưa có bất kì biến động giá nào!`)
-		await ctx.deleteMessage(message.message_id); 
+          ctx.reply(`<a href="${dLink}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{parse_mode: "HTML"})
+          await ctx.deleteMessage(message.message_id)
         }}
 
       if (sts === "success") {
         const avr1 = obj.data.product_base.price_insight.avg_price
         if (avr1 == "-1"){
-          ctx.reply(`Sản phẩm ${url} chưa có bất kì biến động giá nào!`)
-		await ctx.deleteMessage(message.message_id); 
+          ctx.reply(`<a href="${dLink}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{parse_mode: "HTML"})
+          await ctx.deleteMessage(message.message_id)
           return next()
         }
         const name = obj.data.product_base.name
@@ -164,6 +202,7 @@ bot.on('message', async (ctx, next) => {
         });
         const res1 = await response1.text();
         const obj1 = await JSON.parse(res1)
+        console.log("suc222222222222222")
         // const min = obj1.data.product_history_data.price_classification.min_price
         // const rate = obj1.data.product_history_data.price_classification.classify_price
         const rate = obj1.data.product_history_data.auto_content.review_price.sentences[2]
@@ -173,17 +212,26 @@ bot.on('message', async (ctx, next) => {
         const priItem = obj1.data.product_history_data.item_history.price
         const avr = avrPri(priItem)
         const max = Math.max(...priItem)
-        console.log(priItem.length)
+        const count = priItem.length
         const formattedNumbers = priItem.map(number => (number / 1000));
         const formattedDates = timestamps.map(epochToDDMMYY);
         const minValue = Math.min(...priItem)
         const minIndex = priItem.indexOf(minValue);
-        const chart = await quickChart(formattedDates, minIndex, formattedNumbers, minValue.toLocaleString('de-DE'), avr.toLocaleString('de-DE') , max.toLocaleString('de-DE'))
+        const chart = await quickChart(formattedDates, minIndex, formattedNumbers, minValue.toLocaleString('de-DE'), avr.toLocaleString('de-DE') , max.toLocaleString('de-DE'), count)
 
-        const strMess = `<i><a href="${url}">${name}</a></i>\n<b>${rate}</b>`
+        const strMess = `<i><a href="${dLink}">${name}</a></i>\n<b>${rate}</b> ${tagName}`
+        // \n﹏﹏﹏﹏﹏\n@CoNenChotDon
+        await ctx.replyWithPhoto(chart,{caption: strMess, reply_markup: {
+          inline_keyboard: [
+            /* Inline buttons. 2 side-by-side */
+            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "(+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
 
-        await ctx.replyWithPhoto(chart,{caption: strMess, parse_mode: "HTML"});
-      await ctx.deleteMessage(message.message_id);
+            /* One button */
+            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" } ]
+        ]
+      }
+ , parse_mode: "HTML"});
+      await ctx.deleteMessage(message.message_id); 
       }
       break;
     } catch (errr) {
@@ -192,22 +240,23 @@ bot.on('message', async (ctx, next) => {
     }
   }
     if (retryCount === maxRetries) {
-      ctx.reply("Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé!")
+      ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`)
       // Handle the case when the maximum number of retries is reached
-    await ctx.deleteMessage(message.message_id);
-   }
+    }
   }
-     
+    
     } else {
       if (pee.test(url)){
         // await ctx.deleteMessage(message.message_id); 
 // PEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       let retryCount = 0;
-      const maxRetries = 3;
+      const maxRetries = 5;
       while (retryCount < maxRetries) {
         try {
         const respee = await fetch(url)
         const resURL = await respee.url
+        const peeDlink = resURL.match(/(.*?)\?/)[1]
+        console.log(peeDlink)
         const unixtime = Math.floor(Date.now())
       const apiURL = `https://apiv3.beecost.vn/search/product?timestamp=${unixtime}&product_url=${resURL}`
       const response = await fetch(apiURL, {
@@ -223,19 +272,16 @@ bot.on('message', async (ctx, next) => {
       const sts =  obj.status
       
       if (sts === "error" && obj.msg === "product url is not valid") {
-        ctx.reply(`Opps! Có vẻ như ${url} không phải link sản phẩm! Vui lòng kiểm tra lại nhé!`)
-	      await ctx.deleteMessage(message.message_id);
+        ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`)
       } else {
         if (sts === "error") {
-          ctx.reply(`Sản phẩm ${url} chưa có bất kì biến động giá nào!`)
-		await ctx.deleteMessage(message.message_id); 
+          ctx.reply(`Sản phẩm ${peeDlink} chưa có bất kì biến động giá nào! ${tagName}`)
         }}
 
       if (sts === "success") {
         const avr1 = obj.data.product_base.price_insight.avg_price
         if (avr1 == "-1"){
-          ctx.reply(`Sản phẩm ${url} chưa có bất kì biến động giá nào!`)
-		await ctx.deleteMessage(message.message_id); 
+          ctx.reply(`Sản phẩm ${peeDlink} chưa có bất kì biến động giá nào! ${tagName}`)
           return next()
         }
         const name = obj.data.product_base.name
@@ -263,18 +309,25 @@ bot.on('message', async (ctx, next) => {
         const priItem = obj1.data.product_history_data.item_history.price
         const avr = avrPri(priItem)
         const max = Math.max(...priItem)
-        console.log(priItem.length)
+        const count = priItem.length
         const formattedNumbers = priItem.map(number => (number / 1000));
         const formattedDates = timestamps.map(epochToDDMMYY);
-        console.log(formattedDates.length)
         const minValue = Math.min(...priItem)
         const minIndex = priItem.indexOf(minValue);
-        const chart = await quickChart(formattedDates, minIndex, formattedNumbers, minValue.toLocaleString('de-DE'), avr.toLocaleString('de-DE') , max.toLocaleString('de-DE'))
+        const chart = await quickChart(formattedDates, minIndex, formattedNumbers, minValue.toLocaleString('de-DE'), avr.toLocaleString('de-DE') , max.toLocaleString('de-DE'), count)
 
-        const strMess = `<i><a href="${url}">${name}</a></i>\n<b>${rate}</b>`
+        const strMess = `<i><a href="${peeDlink}">${name}</a></i>\n<b>${rate}</b> ${tagName}`
+        //\n﹏﹏﹏﹏﹏\n@CoNenChotDon
+        await ctx.replyWithPhoto(chart,{caption: strMess, reply_markup: {
+          inline_keyboard: [
+            /* Inline buttons. 2 side-by-side */
+            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "(+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
 
-        await ctx.replyWithPhoto(chart,{caption: strMess, parse_mode: "HTML"});
-	      await ctx.deleteMessage(message.message_id);
+            /* One button */
+            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" } ]
+        ]
+      }
+ , parse_mode: "HTML"});
       }
         break;
         } catch (ers) {
@@ -283,14 +336,15 @@ bot.on('message', async (ctx, next) => {
         }
       }
         if (retryCount === maxRetries) {
-          ctx.reply("Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé!")
+          ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`)
           // Handle the case when the maximum number of retries is reached
-		await ctx.deleteMessage(message.message_id); 
+          await ctx.deleteMessage(message.message_id); 
         }
-        } else {
+        
+      } else {
       if (tiki.test(url)) {
-        await ctx.deleteMessage(message.message_id);
-        ctx.reply("Sàn TIKI Đang cập nhật trong thời gian tới!")
+        // await ctx.deleteMessage(message.message_id);
+        ctx.reply(`Hiện tại chưa hỗ trợ nền tảng Tiki! ${tagName}`)
       }
     }
     }
@@ -298,7 +352,7 @@ bot.on('message', async (ctx, next) => {
   }
 
   return next();
-})
+}})
 
 function avrPri(numbers) {
 // Calculate the sum of all numbers
@@ -309,6 +363,16 @@ const average = sum / numbers.length;
 return average
 }
 
+// Get full link 
+function getDlink(dsl) {
+  if (dsl.match(/(.*?)\?/) != null ) {
+    console.log("haha")
+    return dsl.match(/(.*?)\?/)[1]
+  } else {
+    return dsl
+  }
+}
+
 // Convert epoch to DD/MM/YY format
 function epochToDDMMYY(epoch) {
   const date = new Date(epoch);
@@ -317,7 +381,8 @@ function epochToDDMMYY(epoch) {
 }
 
 // quickchart
-function quickChart(time, posi, price, min, avr , max) {
+function quickChart(time, posi, price, min, avr , max, count) {
+const limit = (count > 30) ? false:true;
 const chart = {
   type: 'line',
   data: {
@@ -373,7 +438,7 @@ const chart = {
 		  },
     plugins: {
       datalabels: {
-        display: true,
+        display: limit,
         align: 'bottom',
         backgroundColor: '#ccc',
         borderRadius: 30,
