@@ -148,7 +148,7 @@ bot.on('message', async (ctx, next) => {
     const dLink = await getDlink(resURL)
     //console.log(dLink)
     if (!lkol.test(url) && !lkoc.test(url) && !lzd.test(url) && checkURL == false) {
-    ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`)
+    ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`,{parse_mode: "HTML"} )
     return next()
     }
     // ctx.reply("link aff")
@@ -171,7 +171,7 @@ bot.on('message', async (ctx, next) => {
       const sts =  obj.status
       console.log("suc1111111111111111111111111")
       if (sts === "error" && obj.msg === "product url is not valid") {
-        ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`)
+        ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`,{parse_mode: "HTML"} )
         await ctx.deleteMessage(message.message_id)
       } else {
         if (sts === "error") {
@@ -240,7 +240,7 @@ bot.on('message', async (ctx, next) => {
     }
   }
     if (retryCount === maxRetries) {
-      ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`)
+      ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`,{parse_mode: "HTML"} )
       await ctx.deleteMessage(message.message_id)
       // Handle the case when the maximum number of retries is reached
     }
@@ -273,16 +273,16 @@ bot.on('message', async (ctx, next) => {
       const sts =  obj.status
       
       if (sts === "error" && obj.msg === "product url is not valid") {
-        ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`)
+        ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`,{parse_mode: "HTML"} )
       } else {
         if (sts === "error") {
-          ctx.reply(`Sản phẩm ${peeDlink} chưa có bất kì biến động giá nào! ${tagName}`)
+          ctx.reply(`Sản phẩm ${peeDlink} chưa có bất kì biến động giá nào! ${tagName}`,{parse_mode: "HTML"} )
         }}
 
       if (sts === "success") {
         const avr1 = obj.data.product_base.price_insight.avg_price
         if (avr1 == "-1"){
-          ctx.reply(`Sản phẩm ${peeDlink} chưa có bất kì biến động giá nào! ${tagName}`)
+          ctx.reply(`Sản phẩm ${peeDlink} chưa có bất kì biến động giá nào! ${tagName}`,{parse_mode: "HTML"} )
           return next()
         }
         const name = obj.data.product_base.name
@@ -337,7 +337,7 @@ bot.on('message', async (ctx, next) => {
         }
       }
         if (retryCount === maxRetries) {
-          ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`)
+          ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`,{parse_mode: "HTML"} )
           // Handle the case when the maximum number of retries is reached
           await ctx.deleteMessage(message.message_id); 
         }
