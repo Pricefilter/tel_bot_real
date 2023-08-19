@@ -345,7 +345,7 @@ bot.on('message', async (ctx, next) => {
       } else {
       if (tiki.test(url)) {
         // await ctx.deleteMessage(message.message_id);
-        ctx.reply(`Hiện tại chưa hỗ trợ nền tảng Tiki! ${tagName}`, parse_mode: "HTML"})
+        ctx.reply(`Hiện tại chưa hỗ trợ nền tảng Tiki! ${tagName}`, {parse_mode: "HTML"})
       }
     }
     }
