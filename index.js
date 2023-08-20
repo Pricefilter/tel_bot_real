@@ -231,7 +231,7 @@ bot.on('message', async (ctx, next) => {
         ]
       }
  , parse_mode: "HTML"});
-      await ctx.deleteMessage(message.message_id); 
+      // await ctx.deleteMessage(message.message_id); 
       }
       break;
     } catch (errr) {
