@@ -122,7 +122,7 @@ bot.on('message', async (ctx, next) => {
         await ctx.replyWithPhoto(chart,{caption: strMess, reply_markup: {
           inline_keyboard: [
             /* Inline buttons. 2 side-by-side */
-            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "(+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
+            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
 
             /* One button */
             [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🍀 MiniGame", url: "https://www.facebook.com/groups/salelameofficial/permalink/1256386501702201" }  ]
@@ -224,10 +224,10 @@ bot.on('message', async (ctx, next) => {
         await ctx.replyWithPhoto(chart,{caption: strMess, reply_markup: {
           inline_keyboard: [
             /* Inline buttons. 2 side-by-side */
-            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "(+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
+            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
 
             /* One button */
-            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" } ]
+            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🍀 MiniGame", url: "https://www.facebook.com/groups/salelameofficial/permalink/1256386501702201" } ]
         ]
       }
  , parse_mode: "HTML"});
@@ -322,10 +322,10 @@ bot.on('message', async (ctx, next) => {
         await ctx.replyWithPhoto(chart,{caption: strMess, reply_markup: {
           inline_keyboard: [
             /* Inline buttons. 2 side-by-side */
-            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "(+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
+            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
 
             /* One button */
-            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" } ]
+            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🍀 MiniGame", url: "https://www.facebook.com/groups/salelameofficial/permalink/1256386501702201" }  ]
         ]
       }
  , parse_mode: "HTML"});
