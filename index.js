@@ -125,7 +125,7 @@ bot.on('message', async (ctx, next) => {
             [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
 
             /* One button */
-            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🍀 MiniGame", url: "https://www.facebook.com/groups/salelameofficial/permalink/1256386501702201" }  ]
+            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥 Voucher 99/299K", url: "https://www.facebook.com/groups/salelameofficial/permalink/1264239850916866"}  ]
         ]
       }
  , parse_mode: "HTML"});
@@ -227,7 +227,7 @@ bot.on('message', async (ctx, next) => {
             [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
 
             /* One button */
-            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🍀 MiniGame", url: "https://www.facebook.com/groups/salelameofficial/permalink/1256386501702201" } ]
+            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥 Voucher 99/299K", url: "https://www.facebook.com/groups/salelameofficial/permalink/1264239850916866"  } ]
         ]
       }
  , parse_mode: "HTML"});
@@ -325,7 +325,7 @@ bot.on('message', async (ctx, next) => {
             [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
 
             /* One button */
-            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🍀 MiniGame", url: "https://www.facebook.com/groups/salelameofficial/permalink/1256386501702201" }  ]
+            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥 Voucher 99/299K", url: "https://www.facebook.com/groups/salelameofficial/permalink/1264239850916866"}  ]
         ]
       }
  , parse_mode: "HTML"});
