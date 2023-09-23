@@ -186,8 +186,11 @@ bot.on('message', async (ctx, next) => {
           await ctx.deleteMessage(message.message_id)
           return next()
         }
-        const name = obj.data.product_base.name
-        const baseID = obj.data.product_base.product_base_id
+        const namej = obj.data.product_base.name
+        const name = namej.replace(/</g, "")
+          .replace(/>/g,"")
+          .replace(/\//g,"") 
+	const baseID = obj.data.product_base.product_base_id
         const price = obj.data.product_base.price
   // Fetch get history price
         const hisPri = await `https://apiv3.beecost.vn/product/history_price?product_base_id=${baseID}&price_current=${price}`
@@ -285,8 +288,11 @@ bot.on('message', async (ctx, next) => {
           ctx.reply(`Sản phẩm ${peeDlink} chưa có bất kì biến động giá nào! ${tagName}`,{parse_mode: "HTML"} )
           return next()
         }
-        const name = obj.data.product_base.name
-        const baseID = obj.data.product_base.product_base_id
+        const namej = obj.data.product_base.name
+        const name = namej.replace(/</g, "")
+          .replace(/>/g,"")
+          .replace(/\//g,"")
+	const baseID = obj.data.product_base.product_base_id
         const price = obj.data.product_base.price
   // Fetch get history price
         const hisPri = await `https://apiv3.beecost.vn/product/history_price?product_base_id=${baseID}&price_current=${price}`
