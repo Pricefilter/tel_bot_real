@@ -122,10 +122,10 @@ bot.on('message', async (ctx, next) => {
         await ctx.replyWithPhoto(chart,{caption: strMess, reply_markup: {
           inline_keyboard: [
             /* Inline buttons. 2 side-by-side */
-            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
+            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ?laz" }],
 
             /* One button */
-            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥Voucher 50K/0Đ ", url: "https://www.facebook.com/groups/salelameofficial/permalink/1267226070618244"}]
+            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥 15 Voucher 50K", url: "https://www.facebook.com/groups/salelameofficial/"}]
         ]
       }
  , parse_mode: "HTML"});
@@ -227,10 +227,10 @@ bot.on('message', async (ctx, next) => {
         await ctx.replyWithPhoto(chart,{caption: strMess, reply_markup: {
           inline_keyboard: [
             /* Inline buttons. 2 side-by-side */
-            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
+            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ?laz" }],
 
             /* One button */
-            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥Voucher 50K/0Đ ", url: "https://www.facebook.com/groups/salelameofficial/permalink/1267226070618244"}]
+            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥 15 Voucher 50K", url: "https://www.facebook.com/groups/salelameofficial/"}]
         ]
       }
  , parse_mode: "HTML"});
@@ -328,10 +328,10 @@ bot.on('message', async (ctx, next) => {
         await ctx.replyWithPhoto(chart,{caption: strMess, reply_markup: {
           inline_keyboard: [
             /* Inline buttons. 2 side-by-side */
-            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ" }],
+            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ?laz" }],
 
             /* One button */
-            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥Voucher 50K/0Đ ", url: "https://www.facebook.com/groups/salelameofficial/permalink/1267226070618244"}]
+            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥 15 Voucher 50K", url: "https://www.facebook.com/groups/salelameofficial/"}]
         ]
       }
  , parse_mode: "HTML"});
