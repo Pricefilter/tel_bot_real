@@ -12,7 +12,7 @@ bot.command('start', async (ctx) => {
     ctx.replyWithPhoto("https://ibb.co/6NCCXYc", {caption: `<i><b>Để sử dụng được công cụ - Bạn làm theo các bước sau đây!</b></i>
     \n<b>Bước 1:</b> Tìm đến trang sản phẩm bạn muốn truy vấn.
     \n<b>Bước 2:</b> Nhấn nút chia sẻ sản phẩm (như hình) và copy link chia sẻ sản phẩm.
-    \n<b>Bước 3:</b> Tham gia group https://t.me/CoNenChotDon và paste link sản phẩm vô chat, rồi ấn Gửi.
+    \n<b>Bước 3:</b> Tham gia group https://t.me/CoNenChotDon và paste link sản phẩm vô Check Giá Sản Phẩm, rồi ấn Gửi.
     \n<b>Bước 4:</b> Chờ đợi kết quả từ phía máy chủ và xem xét giá sản phẩm!`, parse_mode: "HTML"})
   } 
 });
@@ -20,13 +20,14 @@ bot.command('start', async (ctx) => {
 // cau lenh
 bot.on('message', async (ctx, next) => {
   const chatId = ctx.message.chat.id
+  const threadID = ctx.message.message_thread_id	
   const fromID = ctx.message.from.id
   const lastName = (ctx.message.from.last_name == undefined) ? "":ctx.message.from.last_name;
   const fullName = `${ctx.message.from.first_name} ${lastName}`
   // const messID = ctx.message.message_id
   console.log(chatId + " - " + fromID) 
   const tagName = `<a href="tg://user?id=${fromID}">${fullName}</a>`
-  if (chatId == "5229925261" || chatId == "-1001959268889") {
+  if (chatId == "5229925261" || chatId == "-1001959268889" && threadID == "3") {
     //ctx.reply("link chuẩn")
   const message = ctx.message.text;
   const linkRegex = /(https?:\/\/[^\s]+)/;
@@ -69,13 +70,13 @@ bot.on('message', async (ctx, next) => {
       const obj = await JSON.parse(res)
       console.log("suc11111111111111")
       const sts =  obj.status
-      if (sts === "error") {ctx.reply(`<a href="${url}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{parse_mode: "HTML"})
+      if (sts === "error") {ctx.reply(`<a href="${url}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
       }
       if (sts === "success") {
         const avr = obj.data.product_base.price_insight.avg_price
 // Kiem tra bien dong gia buoc 1
       if (avr == "-1"){
-        ctx.reply(`<a href="${url}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{parse_mode: "HTML"})
+        ctx.reply(`<a href="${url}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
         } else {
           const curpri = resURL.match(/₫ (.*?)Mua/g )[0].replace(/₫ /g, "")
           .replace(/Mua/g, "")
@@ -119,13 +120,13 @@ bot.on('message', async (ctx, next) => {
        
         const strMess = `<i><a href="${dLink}">${name}</a></i>\n<b>${rate}</b> ${tagName}`
         //\n﹏﹏﹏﹏﹏\n@CoNenChotDon
-        await ctx.replyWithPhoto(chart,{caption: strMess, reply_markup: {
+        await ctx.replyWithPhoto(chart,{caption: strMess, message_thread_id: threadID, reply_markup: {
           inline_keyboard: [
             /* Inline buttons. 2 side-by-side */
-            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ?laz" }],
+	            [ { text: "💯 Mã Giảm Giá", url: "https://s.lazada.vn/l.FT5H?" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ?laz" }],
 
             /* One button */
-            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥 15 Voucher 50K", url: "https://www.facebook.com/groups/salelameofficial/"}]
+            //[ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥 15 Voucher 50K", url: "https://www.facebook.com/groups/salelameofficial/"}]
         ]
       }
  , parse_mode: "HTML"});
@@ -138,7 +139,7 @@ bot.on('message', async (ctx, next) => {
     }
   }
     if (retryCount === maxRetries) {
-      ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`)
+      ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
       // Handle the case when the maximum number of retries is reached
     }
   } else {
@@ -148,7 +149,7 @@ bot.on('message', async (ctx, next) => {
     const dLink = await getDlink(resURL)
     //console.log(dLink)
     if (!lkol.test(url) && !lkoc.test(url) && !lzd.test(url) && checkURL == false) {
-    ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`,{parse_mode: "HTML"} )
+    ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"} )
     return next()
     }
     // ctx.reply("link aff")
@@ -171,18 +172,18 @@ bot.on('message', async (ctx, next) => {
       const sts =  obj.status
       console.log("suc1111111111111111111111111")
       if (sts === "error" && obj.msg === "product url is not valid") {
-        ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`,{parse_mode: "HTML"} )
+        ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"} )
         await ctx.deleteMessage(message.message_id)
       } else {
         if (sts === "error") {
-          ctx.reply(`<a href="${dLink}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{parse_mode: "HTML"})
+          ctx.reply(`<a href="${dLink}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
           await ctx.deleteMessage(message.message_id)
         }}
 
       if (sts === "success") {
         const avr1 = obj.data.product_base.price_insight.avg_price
         if (avr1 == "-1"){
-          ctx.reply(`<a href="${dLink}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{parse_mode: "HTML"})
+          ctx.reply(`<a href="${dLink}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
           await ctx.deleteMessage(message.message_id)
           return next()
         }
@@ -224,13 +225,13 @@ bot.on('message', async (ctx, next) => {
 
         const strMess = `<i><a href="${dLink}">${name}</a></i>\n<b>${rate}</b> ${tagName}`
         // \n﹏﹏﹏﹏﹏\n@CoNenChotDon
-        await ctx.replyWithPhoto(chart,{caption: strMess, reply_markup: {
+        await ctx.replyWithPhoto(chart,{caption: strMess, message_thread_id: threadID, reply_markup: {
           inline_keyboard: [
             /* Inline buttons. 2 side-by-side */
-            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ?laz" }],
+            [ { text: "💯 Mã Giảm Giá", url: "https://s.lazada.vn/l.FT5H?" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ?laz" }],
 
             /* One button */
-            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥 15 Voucher 50K", url: "https://www.facebook.com/groups/salelameofficial/"}]
+            //[ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥 15 Voucher 50K", url: "https://www.facebook.com/groups/salelameofficial/"}]
         ]
       }
  , parse_mode: "HTML"});
@@ -243,7 +244,7 @@ bot.on('message', async (ctx, next) => {
     }
   }
     if (retryCount === maxRetries) {
-      ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`,{parse_mode: "HTML"} )
+      ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"} )
       await ctx.deleteMessage(message.message_id)
       // Handle the case when the maximum number of retries is reached
     }
@@ -276,16 +277,16 @@ bot.on('message', async (ctx, next) => {
       const sts =  obj.status
       
       if (sts === "error" && obj.msg === "product url is not valid") {
-        ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`,{parse_mode: "HTML"} )
+        ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"} )
       } else {
         if (sts === "error") {
-          ctx.reply(`Sản phẩm ${peeDlink} chưa có bất kì biến động giá nào! ${tagName}`,{parse_mode: "HTML"} )
+          ctx.reply(`Sản phẩm ${peeDlink} chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"} )
         }}
 
       if (sts === "success") {
         const avr1 = obj.data.product_base.price_insight.avg_price
         if (avr1 == "-1"){
-          ctx.reply(`Sản phẩm ${peeDlink} chưa có bất kì biến động giá nào! ${tagName}`,{parse_mode: "HTML"} )
+          ctx.reply(`Sản phẩm ${peeDlink} chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"} )
           return next()
         }
         const namej = obj.data.product_base.name
@@ -325,13 +326,13 @@ bot.on('message', async (ctx, next) => {
 
         const strMess = `<i><a href="${peeDlink}">${name}</a></i>\n<b>${rate}</b> ${tagName}`
         //\n﹏﹏﹏﹏﹏\n@CoNenChotDon
-        await ctx.replyWithPhoto(chart,{caption: strMess, reply_markup: {
+        await ctx.replyWithPhoto(chart,{caption: strMess, message_thread_id: threadID, reply_markup: {
           inline_keyboard: [
             /* Inline buttons. 2 side-by-side */
-            [ { text: "💯 Săn Sale", url: "https://t.me/SaleLaMeOfficial" }, { text: "🤝 (+1) Hữu Ích", url: "https://s.lazada.vn/l.GRJZ?laz" }],
+            [ { text: "💯 Add Giỏ Live", url: "https://t.me/" }],
 
             /* One button */
-            [ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥 15 Voucher 50K", url: "https://www.facebook.com/groups/salelameofficial/"}]
+            //[ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥 15 Voucher 50K", url: "https://www.facebook.com/groups/salelameofficial/"}]
         ]
       }
  , parse_mode: "HTML"});
@@ -343,7 +344,7 @@ bot.on('message', async (ctx, next) => {
         }
       }
         if (retryCount === maxRetries) {
-          ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`,{parse_mode: "HTML"} )
+          ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"} )
           // Handle the case when the maximum number of retries is reached
           await ctx.deleteMessage(message.message_id); 
         }
@@ -351,7 +352,7 @@ bot.on('message', async (ctx, next) => {
       } else {
       if (tiki.test(url)) {
         // await ctx.deleteMessage(message.message_id);
-        ctx.reply(`Hiện tại chưa hỗ trợ nền tảng Tiki! ${tagName}`, {parse_mode: "HTML"})
+        ctx.reply(`Hiện tại chưa hỗ trợ nền tảng Tiki! ${tagName}`, {message_thread_id: threadID, parse_mode: "HTML"})
       }
     }
     }
@@ -395,7 +396,7 @@ const chart = {
   data: {
     labels: time,
     datasets: [{
-      label: 'Có Nên Chốt Đơn X SaleLaMeOfficial',
+      label: 'Có Nên Chốt Đơn X SHOPEE ALIVE',
       data: price,
       fill: false,
       borderColor: 'green',
