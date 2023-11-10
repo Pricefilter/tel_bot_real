@@ -27,7 +27,7 @@ bot.on('message', async (ctx, next) => {
   // const messID = ctx.message.message_id
   console.log(chatId + " - " + fromID) 
   const tagName = `<a href="tg://user?id=${fromID}">${fullName}</a>`
-  if (chatId == "5229925261" || chatId == "-1001959268889" && threadID == "3") {
+  if (chatId == "5229925261" || chatId == "-1001959268889" && threadID == "1465") {
     //ctx.reply("link chuẩn")
   const message = ctx.message.text;
   const linkRegex = /(https?:\/\/[^\s]+)/;
@@ -329,7 +329,7 @@ bot.on('message', async (ctx, next) => {
         await ctx.replyWithPhoto(chart,{caption: strMess, message_thread_id: threadID, reply_markup: {
           inline_keyboard: [
             /* Inline buttons. 2 side-by-side */
-            [ { text: "💯 Add Giỏ Live", url: "https://t.me/" }],
+            [ { text: "💯 Add Giỏ Live", url: "https://t.me/CoNenChotDon/1464" }],
 
             /* One button */
             //[ { text: "❓Hướng Dẫn", url: "https://t.me/ChotDonBot" }, { text: "🔥 15 Voucher 50K", url: "https://www.facebook.com/groups/salelameofficial/"}]
@@ -346,7 +346,7 @@ bot.on('message', async (ctx, next) => {
         if (retryCount === maxRetries) {
           ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"} )
           // Handle the case when the maximum number of retries is reached
-          await ctx.deleteMessage(message.message_id); 
+          //await ctx.deleteMessage(message.message_id); 
         }
         
       } else {
