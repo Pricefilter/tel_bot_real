@@ -259,7 +259,7 @@ bot.on('message', async (ctx, next) => {
       while (retryCount < maxRetries) {
         try {
         const respee = await fetch(url)
-        const resURL = await respee.url
+        const resURL = await decodeURIComponent(respee.url.replace(/https:\/\/shopee\.vn\/universal-link\?af=false&deep_and_deferred=1&redir=/gm,''))
         const peeDlink = resURL.match(/(.*?)\?/)[1]
         console.log(peeDlink)
         const unixtime = Math.floor(Date.now())
