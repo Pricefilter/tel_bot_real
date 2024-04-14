@@ -36,6 +36,7 @@ bot.on('message', async (ctx, next) => {
   const lkoc = /\?cc/;
   const pee = /https:\/\/sh/;
   const tiki = /https:\/\/ti/;
+  const peeV = /https:\/\/vn\.sh/;
   
   if (linkRegex.test(message)) {
     const url = message.match(linkRegex)[0]
@@ -251,7 +252,7 @@ bot.on('message', async (ctx, next) => {
   }
     
     } else {
-      if (pee.test(url)){
+      if (pee.test(url) || peeV.test(url){
         // await ctx.deleteMessage(message.message_id); 
 // PEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       let retryCount = 0;
