@@ -252,7 +252,7 @@ bot.on('message', async (ctx, next) => {
   }
     
     } else {
-      if (pee.test(url) || peeV.test(url){
+      if (pee.test(url) || peeV.test(url)){
 	      console.log("PEEEEEEEEEEEE")
         // await ctx.deleteMessage(message.message_id); 
 // PEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
