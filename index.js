@@ -39,7 +39,7 @@ bot.on('message', async (ctx, next) => {
   const peeV = /https:\/\/vn\.sh/;
   
   if (linkRegex.test(message)) {
-    const url = message.match(linkRegex)[0]
+    const url = message.match(linkRegex)[0].replace(/https:\/\/vn\.sh/, "https://sh") 
     if (!lkol.test(url) && !lkoc.test(url) && !lzd.test(url) && !pee.test(url) && !tiki.test(url)) {
      //await ctx.deleteMessage(message.message_id);
       return next()
@@ -259,8 +259,7 @@ bot.on('message', async (ctx, next) => {
       let retryCount = 0;
       const maxRetries = 5;
       while (retryCount < maxRetries) {
-        try {
-	url = url.replace(/https:\/\/vn\./, "https://")	
+        try {	
         const respee = await fetch(url)
         const resURL = await decodeURIComponent(respee.url.replace(/https:\/\/shopee\.vn\/universal-link\?af=false&deep_and_deferred=1&redir=/gm,''))
         const peeDlink = resURL.match(/(.*?)\?/)[1]
