@@ -74,7 +74,7 @@ bot.on('message', async (ctx, next) => {
       if (sts === "error") {ctx.reply(`<a href="${url}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
       }
       if (sts === "success") {
-        const avr = obj?.data?.product_base?.price_insight?.avg_price
+        const avr = obj?.data?.product_base?.price_insight?.avg_price ?? '0';
 // Kiem tra bien dong gia buoc 1
       if (avr == "-1"){
         ctx.reply(`<a href="${url}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
@@ -182,7 +182,7 @@ bot.on('message', async (ctx, next) => {
         }}
 
       if (sts === "success") {
-        const avr1 = obj?.data?.product_base?.price_insight?.avg_price
+        const avr1 = obj?.data?.product_base?.price_insight?.avg_price ?? '0';
         if (avr1 == "-1"){
           ctx.reply(`<a href="${dLink}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
           await ctx.deleteMessage(message.message_id)
