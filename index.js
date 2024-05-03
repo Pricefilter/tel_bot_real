@@ -186,7 +186,7 @@ bot.on('message', async (ctx, next) => {
         if (avr1 == "-1"){
           ctx.reply(`<a href="${dLink}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
           await ctx.deleteMessage(message.message_id)
-          return next()
+          //return next()
         }
         const namej = obj.data.product_base.name
         const name = namej.replace(/</g, "")
@@ -286,10 +286,10 @@ bot.on('message', async (ctx, next) => {
         }}
 
       if (sts === "success") {
-        const avr1 = 
+        const avr1 = obj?.data?.product_base?.price_insight?.avg_price ?? '0';
         if (avr1 == "-1"){
           ctx.reply(`Sản phẩm ${peeDlink} chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"} )
-          return next()
+          //return next()
         }
         const namej = obj.data.product_base.name
         const name = namej.replace(/</g, "")
