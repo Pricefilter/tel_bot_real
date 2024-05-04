@@ -72,12 +72,14 @@ bot.on('message', async (ctx, next) => {
       console.log("suc11111111111111")
       const sts =  obj.status
       if (sts === "error") {ctx.reply(`<a href="${url}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
+			    return next()
       }
       if (sts === "success") {
         const avr = obj?.data?.product_base?.price_insight?.avg_price ?? '0';
 // Kiem tra bien dong gia buoc 1
       if (avr == "-1"){
         ctx.reply(`<a href="${url}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
+	      return next()
         } else {
           const curpri = resURL.match(/₫ (.*?)Mua/g )[0].replace(/₫ /g, "")
           .replace(/Mua/g, "")
