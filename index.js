@@ -179,6 +179,7 @@ bot.on('message', async (ctx, next) => {
         if (sts === "error") {
           ctx.reply(`<a href="${dLink}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
           await ctx.deleteMessage(message.message_id)
+		return next()
         }}
 
       if (sts === "success") {
