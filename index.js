@@ -176,7 +176,7 @@ bot.on('message', async (ctx, next) => {
       console.log("suc1111111111111111111111111")
       if (sts === "error" && obj.msg === "product url is not valid") {
         ctx.reply(`Opps! Có vẻ như đây không phải link sản phẩm! Vui lòng kiểm tra lại nhé! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"} )
-        await ctx.deleteMessage(message.message_id)
+        //await ctx.deleteMessage(message.message_id)
       } else {
         if (sts === "error") {
           ctx.reply(`<a href="${dLink}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
@@ -188,7 +188,7 @@ bot.on('message', async (ctx, next) => {
         const avr1 = obj?.data?.product_base?.price_insight?.avg_price ?? '0';
         if (avr1 == "-1"){
           ctx.reply(`<a href="${dLink}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
-          await ctx.deleteMessage(message.message_id)
+          //await ctx.deleteMessage(message.message_id)
           //return next()
         }
         const namej = obj.data.product_base.name
@@ -249,7 +249,7 @@ bot.on('message', async (ctx, next) => {
   }
     if (retryCount === maxRetries) {
       ctx.reply(`Máy chủ gặp sự cố trong quá trình truy xuất, hãy thử lại nhé! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"} )
-      await ctx.deleteMessage(message.message_id)
+      //await ctx.deleteMessage(message.message_id)
       // Handle the case when the maximum number of retries is reached
     }
   }
