@@ -37,9 +37,10 @@ bot.on('message', async (ctx, next) => {
   const pee = /https:\/\/sh/;
   const tiki = /https:\/\/ti/;
   const peeV = /https:\/\/vn\.sh/;
+  const peeS = /https:\/\/s\.sh/;	  
   
   if (linkRegex.test(message)) {
-    const url = message.match(linkRegex)[0].replace(/https:\/\/vn\.sh/, "https://sh") 
+    const url = message.match(linkRegex)[0].replace(/https:\/\/vn\.sh/, "https://sh").replace(/https:\/\/s\.shopee\.vn/, "https://shope.ee") 
     if (!lkol.test(url) && !lkoc.test(url) && !lzd.test(url) && !pee.test(url) && !tiki.test(url)) {
      //await ctx.deleteMessage(message.message_id);
       return next()
@@ -255,7 +256,7 @@ bot.on('message', async (ctx, next) => {
   }
     
     } else {
-      if (pee.test(url) || peeV.test(url)){
+      if (pee.test(url) || peeV.test(url) || peeS.test(url)){
 	      console.log("PEEEEEEEEEEEE")
         // await ctx.deleteMessage(message.message_id); 
 // PEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
