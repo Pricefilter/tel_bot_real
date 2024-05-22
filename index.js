@@ -41,6 +41,7 @@ bot.on('message', async (ctx, next) => {
   
   if (linkRegex.test(message)) {
     const url = message.match(linkRegex)[0].replace(/https:\/\/vn\.sh/, "https://sh").replace(/https:\/\/s\.shopee\.vn/, "https://shope.ee") 
+	  console.log(url)
     if (!lkol.test(url) && !lkoc.test(url) && !lzd.test(url) && !pee.test(url) && !tiki.test(url)) {
      //await ctx.deleteMessage(message.message_id);
       return next()
