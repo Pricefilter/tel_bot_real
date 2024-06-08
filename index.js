@@ -19,6 +19,7 @@ bot.command('start', async (ctx) => {
 
 // cau lenh
 bot.on('message', async (ctx, next) => {
+	break;
   const chatId = ctx.message.chat.id
   const threadID = ctx.message.message_thread_id	
   const fromID = ctx.message.from.id
