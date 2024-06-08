@@ -19,7 +19,7 @@ bot.command('start', async (ctx) => {
 
 // cau lenh
 bot.on('message', async (ctx, next) => {
-	//break;
+	break;
   const chatId = ctx.message.chat.id
   const threadID = ctx.message.message_thread_id	
   const fromID = ctx.message.from.id
@@ -75,6 +75,7 @@ bot.on('message', async (ctx, next) => {
       console.log("suc11111111111111")
       const sts =  obj.status
       if (sts === "error") {ctx.reply(`<a href="${url}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
+			    break;
 			    return next()
       }
       if (sts === "success") {
@@ -82,6 +83,7 @@ bot.on('message', async (ctx, next) => {
 // Kiem tra bien dong gia buoc 1
       if (avr == "-1"){
         ctx.reply(`<a href="${url}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
+	      break;
 	      return next()
         } else {
           const curpri = resURL.match(/₫ (.*?)Mua/g )[0].replace(/₫ /g, "")
@@ -192,7 +194,7 @@ bot.on('message', async (ctx, next) => {
         if (avr1 == "-1"){
           ctx.reply(`<a href="${dLink}">Sản phẩm</a> chưa có bất kì biến động giá nào! ${tagName}`,{message_thread_id: threadID, parse_mode: "HTML"})
           //await ctx.deleteMessage(message.message_id)
-          //return next()
+          return next()
         }
         const namej = obj.data.product_base.name
         const name = namej.replace(/</g, "")
